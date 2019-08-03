@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.hucisc525project.airlinedataservices.MongodbApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.602 sec - in com.hucisc525project.airlinedataservices.MongodbApplicationTests
