@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.web.util.UriTemplate;
 
 import com.hucisc525project.airlinedataservices.model.Airport;
 import com.hucisc525project.airlinedataservices.model.ApplicationProperties;
@@ -195,8 +196,11 @@ public class AirportRepositoryImpl implements AirportRepository {
 		Airport result = mongoTemplate.findOne(query, Airport.class);
 		String city = result.getCity();
 		String country = result.getCountry();
-		String appid = props.getAPPID();
-		String url = "http://api.openweathermap.org/data/2.5/weather?q={city}{country}&APPID={appid}";
+		String appid = "1e1b98dd2aaa79d2d4e20d8da4ba5bfd";
+		String url = "http://api.openweathermap.org/data/2.5/weather?q={city},{country}&APPID={appid}";
+		url = url.replace("{city}",city).replace("{country}",country).replace("{appid}",appid);
+		//String url = "http://api.openweathermap.org/data/2.5/weather?q=Perry,USA&APPID=1e1b98dd2aaa79d2d4e20d8da4ba5bfd";
+		
 		JSONObject json = readJsonFromUrl(url);
         result.setWeatherReport(String.valueOf(json));
 		return result;
