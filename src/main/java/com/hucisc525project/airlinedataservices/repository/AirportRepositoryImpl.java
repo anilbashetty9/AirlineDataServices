@@ -2,6 +2,9 @@ package com.hucisc525project.airlinedataservices.repository;
 
 import java.io.BufferedReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -204,6 +207,87 @@ public class AirportRepositoryImpl implements AirportRepository {
 		JSONObject json = readJsonFromUrl(url);
         result.setWeatherReport(String.valueOf(json));
 		return result;
+	}
+	
+	@Override
+	public ArrayList<Airport> findByMostDepDelay () {
+		ArrayList<Airport> airportsList = (ArrayList<Airport>) mongoTemplate.findAll(Airport.class);
+		Collections.sort(airportsList, new Comparator<Airport>() {
+
+			@Override
+			public int compare(Airport o1, Airport o2) {
+				if(o1.getDepDelay() == null && o2.getDepDelay() == null )
+					return 0;
+				else if (o1.getDepDelay() == null)
+					return 1;
+				else if (o2.getDepDelay() == null)
+					return -1;
+				int timeDelay1 = 0;
+				int timeDelay2 = 0;
+				for (int i =0;i< o1.getDepDelay().size();i++) {
+					timeDelay1 = timeDelay1 + o1.getDepDelay().get(i).getTime();
+				}
+				for (int i =0;i< o2.getDepDelay().size();i++) {
+					timeDelay2 = timeDelay2 + o2.getDepDelay().get(i).getTime();
+				}
+				if (timeDelay1 == timeDelay2) {
+					return 0;
+				}
+				return timeDelay1 < timeDelay2 ? 1 : -1;
+			}
+		});
+		int sizeList = airportsList.size();
+		for (int i=0;i<sizeList;i++) {
+			if(airportsList.get(i).getDepDelay() == null) {
+				airportsList.remove(i);
+				sizeList --;
+				i--;
+			}
+				
+		}
+			
+		return airportsList;
+	}
+
+	
+	@Override
+	public ArrayList<Airport> findByLeastDepDelay() {
+		ArrayList<Airport> airportsList = (ArrayList<Airport>) mongoTemplate.findAll(Airport.class);
+		Collections.sort(airportsList, new Comparator<Airport>() {
+
+			@Override
+			public int compare(Airport o1, Airport o2) {
+				if(o1.getDepDelay() == null && o2.getDepDelay() == null )
+					return 0;
+				else if (o1.getDepDelay() == null)
+					return -1;
+				else if (o2.getDepDelay() == null)
+					return 1;
+				int timeDelay1 = 0;
+				int timeDelay2 = 0;
+				for (int i =0;i< o1.getDepDelay().size();i++) {
+					timeDelay1 = timeDelay1 + o1.getDepDelay().get(i).getTime();
+				}
+				for (int i =0;i< o2.getDepDelay().size();i++) {
+					timeDelay2 = timeDelay2 + o2.getDepDelay().get(i).getTime();
+				}
+				if (timeDelay1 == timeDelay2) {
+					return 0;
+				}
+				return timeDelay1 < timeDelay2 ? -1 : 1;
+			}
+		});
+		int sizeList = airportsList.size();
+		for (int i=0;i<sizeList;i++) {
+			if(airportsList.get(i).getDepDelay() == null) {
+				airportsList.remove(i);
+				sizeList --;
+				i--;
+			}
+				
+		}
+			
+		return airportsList;
 	}
 
 }

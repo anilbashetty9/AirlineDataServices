@@ -1,7 +1,10 @@
 package com.hucisc525project.airlinedataservices.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author Anil Bashetty
@@ -21,6 +24,39 @@ public class Airport {
 	private String lat;
 	private String longi;
 	private String weatherReport;
+	@Field("DepDelay")
+	private List<DepDelay> depDelay;
+	
+	
+
+	public List<DepDelay> getDepDelay() {
+		return depDelay;
+	}
+
+	public void setDepDelay(List<DepDelay> depDelay) {
+		this.depDelay = depDelay;
+	}
+	
+	 public class DepDelay{
+		
+		public int getYear() {
+			return year;
+		}
+		public void setYear(int year) {
+			this.year = year;
+		}
+		public int getTime() {
+			return time;
+		}
+		public void setTime(int time) {
+			this.time = time;
+		}
+		@Field("year")
+		int year;
+		@Field("time")
+		int time;
+	}
+	
 
 	public String getWeatherReport() {
 		return weatherReport;

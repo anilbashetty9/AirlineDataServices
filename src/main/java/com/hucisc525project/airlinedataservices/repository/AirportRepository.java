@@ -1,6 +1,7 @@
 package com.hucisc525project.airlinedataservices.repository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -14,5 +15,11 @@ public interface AirportRepository extends MongoRepository<Airport, String> {
 
 	@Query("{iata:'?0'}")
 	Airport findByIata(@Param("iata") String iata) throws IOException;
+	
+	@Query("{}")
+	ArrayList<Airport> findByMostDepDelay();
+	
+	@Query("{}")
+	ArrayList<Airport> findByLeastDepDelay();
 
 }
